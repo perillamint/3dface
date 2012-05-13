@@ -20,7 +20,7 @@ IplImage *freenect_sync_get_depth_cv(int index)
 
 	if (!image) image = cvCreateImage(cvSize(640, 480), IPL_DEPTH_16U, 1);
 	unsigned int timestamp;
-	if (freenect_sync_get_depth((void**)&data, &timestamp, index, FREENECT_DEPTH_10BIT))
+	if (freenect_sync_get_depth((void**)&data, &timestamp, index, FREENECT_DEPTH_REGISTERED))
 	    return NULL;
 
 	//dumpcode((unsigned char*)data, 64);
@@ -37,9 +37,10 @@ IplImage *freenect_sync_get_depth_cv(int index)
 
 	for(i=0; i<640; i++)
 		for(j=0; j<480; j++)
-			targetData[i*480 + j] = ((unsigned short int*)data)[i*480+j]*64;
+			targetData[i*480 + j] = 0xFFFF - ((unsigned short int*)data)[i*480+j]*32;
+	//NOTE: Multiplying 16 may occur overflow in large distance but it might not disturb the data.
 
-	//dumpdepth((unsigned short int*)data, 64);
+	dumpdepth((unsigned short int*)(data+153600), 64);
 	return image;
 }
 

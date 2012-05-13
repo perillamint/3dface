@@ -50,7 +50,7 @@ void dumpdepth(unsigned short int *data, int num)
 
 	for(i=0; i<num; i++)
 	{
-		printf("0x%X ", data[i]*64);
+		printf("0x%X ", data[i]);
 
 		if(i % 16 == 15) printf("\n");
 	}

@@ -44,7 +44,7 @@ void detect_and_draw(IplImage* img, IplImage *depth)
                                             cvSize(40, 40) );
 */
     	CvSeq* faces = cvHaarDetectObjects( temp, cascade, storage,
-                                            1.7, 2, CV_HAAR_DO_CANNY_PRUNING,
+                                            1.6, 2, CV_HAAR_DO_CANNY_PRUNING,
                                             cvSize(40, 40) );
 
         // Loop the number of faces found.
