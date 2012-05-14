@@ -126,11 +126,9 @@
 	<storageModule moduleId="refreshScope" versionNumber="1">
 		<resource resourceType="PROJECT" workspacePath="/KinectTest"/>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1630809463;cdt.managedbuild.config.gnu.cross.exe.debug.1630809463.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.91971795;cdt.managedbuild.tool.gnu.cpp.compiler.input.99940298">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
-		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.2027688208;cdt.managedbuild.config.gnu.cross.exe.release.2027688208.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.1509785569;cdt.managedbuild.tool.gnu.cpp.compiler.input.449593328">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
@@ -140,6 +138,8 @@
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.2027688208;cdt.managedbuild.config.gnu.cross.exe.release.2027688208.;cdt.managedbuild.tool.gnu.cross.c.compiler.2035501210;cdt.managedbuild.tool.gnu.c.compiler.input.164155848">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.1630809463;cdt.managedbuild.config.gnu.cross.exe.debug.1630809463.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.91971795;cdt.managedbuild.tool.gnu.cpp.compiler.input.99940298">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
+		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

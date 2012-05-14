@@ -54,6 +54,15 @@ void detect_and_draw(IplImage* img, IplImage *depth)
             CvRect* r = (CvRect*)cvGetSeqElem( faces, i );
 
             // Find the dimensions of the face,and scale it if necessary
+            pt1.x = r->x*scale;
+            pt2.x = (r->x+r->width)*scale;
+            pt1.y = r->y*scale	;
+            pt2.y = (r->y+r->height)*scale;
+
+            // Draw the rectangle in the input image
+            cvRectangle( temp, pt1, pt2, CV_RGB(0,0,255), 3, 8, 0 );
+            cvRectangle(depthTemp, pt1, pt2, CV_RGB(0,0,255), 3, 8, 0);
+
             pt1.x = r->x*scale+(r->width*.2);
             pt2.x = (r->x+(r->width*(1-.2)))*scale;
             pt1.y = r->y*scale;
@@ -61,7 +70,6 @@ void detect_and_draw(IplImage* img, IplImage *depth)
 
             // Draw the rectangle in the input image
             cvRectangle( temp, pt1, pt2, CV_RGB(0,255,0), 3, 8, 0 );
-            cvRectangle(depthTemp, pt1, pt2, CV_RGB(0,255,0), 3, 8, 0);
         }
     }
 
