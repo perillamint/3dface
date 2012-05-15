@@ -4,14 +4,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../heartbeat.cpp \
 ../libfreenect_cv.cpp \
 ../main.cpp 
 
 OBJS += \
+./heartbeat.o \
 ./libfreenect_cv.o \
 ./main.o 
 
 CPP_DEPS += \
+./heartbeat.d \
 ./libfreenect_cv.d \
 ./main.d 
 
