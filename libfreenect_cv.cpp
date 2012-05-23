@@ -40,7 +40,7 @@ IplImage *freenect_sync_get_depth_cv(int index)
 			targetData[i*480 + j] = 0xFFFF - ((unsigned short int*)data)[i*480+j]*32;
 	//NOTE: Multiplying 16 may occur overflow in large distance but it might not disturb the data.
 
-	dumpdepth((unsigned short int*)(data+153600), 64);
+	//dumpdepth((unsigned short int*)(data+153600), 64);
 	return image;
 }
 

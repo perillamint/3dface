@@ -15,7 +15,7 @@
 static CvMemStorage* storage = 0;
 static CvHaarClassifierCascade* cascade = 0;
 
-void detect_and_draw(IplImage* img, IplImage *depth)
+void detect_and_draw(IplImage* img, IplImage *depth, bool save)
 {
     int scale = 1;
 
@@ -28,7 +28,7 @@ void detect_and_draw(IplImage* img, IplImage *depth)
 
     // Create two points to represent the face locations
     CvPoint pt1, pt2;
-    int i;
+    int i, j, k;
 
     // Clear the memory storage which was used before
     cvClearMemStorage( storage );
@@ -63,13 +63,28 @@ void detect_and_draw(IplImage* img, IplImage *depth)
             cvRectangle( temp, pt1, pt2, CV_RGB(0,0,255), 3, 8, 0 );
             cvRectangle(depthTemp, pt1, pt2, CV_RGB(0,0,255), 3, 8, 0);
 
+            if(save)
+            {
+            	FILE *csvFile = fopen("face.csv", "w");
+            	for(j=pt1.y; j<pt2.y; j++)
+            	{
+            		for(k=pt1.x; k<pt2.x; k++)
+            		{
+            			fprintf(csvFile, "%u,", (((uint16_t*)(depthTemp->imageData)) + j*depthTemp->width)[k]);
+            		}
+            		fprintf(csvFile, "\n");
+            	}
+            	printf("Face captured!\n");
+            	fclose(csvFile);
+            }
+/*
             pt1.x = r->x*scale+(r->width*.2);
             pt2.x = (r->x+(r->width*(1-.2)))*scale;
             pt1.y = r->y*scale;
             pt2.y = (r->y+r->height)*scale;
 
             // Draw the rectangle in the input image
-            cvRectangle( temp, pt1, pt2, CV_RGB(0,255,0), 3, 8, 0 );
+            cvRectangle( temp, pt1, pt2, CV_RGB(0,255,0), 3, 8, 0 );*/
         }
     }
 
@@ -93,14 +108,18 @@ int main(int argc, char **argv)
 
 	storage = cvCreateMemStorage(0);
 
-	while (cvWaitKey(10) < 0) {
+	int key = -1;
+
+	while ((key & 0xFF) != 0x1B) { //Break when ESC is pressed.
+		key = cvWaitKey(10);
+
 		IplImage *image = freenect_sync_get_rgb_cv(0);
 		if (!image) {
 		    printf("Error: Kinect not connected?\n");
 		    return -1;
 		}
 
-		DEBUG;
+		//DEBUG;
 /*
 		IplImage *irimage = freenect_sync_get_ir_cv(0);
 		if (!irimage) {
@@ -117,9 +136,16 @@ int main(int argc, char **argv)
 		    return -1;
 		}
 
-		DEBUG;
+		//DEBUG;
 
-		detect_and_draw(image, depth);
+
+		//printf("%d\n", key);
+
+		if((key & 0xFF) == 'p')
+		{
+			detect_and_draw(image, depth, true);
+		}
+		detect_and_draw(image, depth, false);
 		cvShowImage("RGB", image);
 
 		//DEBUG;
