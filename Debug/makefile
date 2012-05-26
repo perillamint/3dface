@@ -43,7 +43,7 @@ all: 3dface
 3dface: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	g++ -L/usr/local/lib -o "3dface" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++  -o "3dface" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
