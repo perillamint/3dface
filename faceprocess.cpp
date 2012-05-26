@@ -1,8 +1,8 @@
 /*
- * heartbeat.cpp
+ * faceprocess.cpp
  *
  *  Created on: 2012. 5. 15.
- *      Author: iluvatar
+ *      Author: maneulyori
  */
 
 #include <opencv/cv.h>

@@ -1,12 +1,12 @@
 /*
- * heartbeat.h
+ * faceprocess.h
  *
  *  Created on: 2012. 5. 15.
- *      Author: iluvatar
+ *      Author: maneulyori
  */
 
-#ifndef HEARTBEAT_H_
-#define HEARTBEAT_H_
+#ifndef FACEPROCESS_H_
+#define FACEPROCESS_H_
 
 struct Imageavg {
 	unsigned int redAverage;
@@ -16,4 +16,4 @@ struct Imageavg {
 
 typedef Imageavg ImageAvg;
 
-#endif /* HEARTBEAT_H_ */
+#endif /* FACEPROCESS_H_ */
