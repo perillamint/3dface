@@ -1,4 +1,4 @@
-/*
+/* 
  * faceprocess.h
  *
  *  Created on: 2012. 5. 15.
@@ -8,7 +8,8 @@
 #ifndef FACEPROCESS_H_
 #define FACEPROCESS_H_
 
-struct Imageavg {
+struct Imageavg
+{
 	unsigned int redAverage;
 	unsigned int greenAverage;
 	unsigned int blueAverage;
