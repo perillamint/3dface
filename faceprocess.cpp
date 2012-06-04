@@ -9,6 +9,8 @@
 #include <opencv/highgui.h>
 #include "faceprocess.h"
 
+#define MAXTHRESHOLD 0xFFF0
+
 ImageAvg *avgFace(IplImage * image, CvPoint pt1, CvPoint pt2)
 {
 	int x, y;
@@ -60,4 +62,64 @@ uint16_t avgFaceDepth(IplImage *image)
 	}
 
 	return (uint16_t)(sum / (image->width * image->height));
+}
+
+uint16_t minFaceDepth(IplImage *image)
+{
+	int x, y;
+	uint64_t min = 0xFFFF;
+
+	for(x=0; x<image->width; x++)
+	{
+		for(y=0; y<image->height; y++)
+		{
+			if(min > (((uint16_t *) (image->imageData)) + y * image->width)[x])
+				min = (((uint16_t *) (image->imageData)) + y * image->width)[x];
+		}
+	}
+
+	return min;
+}
+
+uint16_t maxFaceDepth(IplImage *image)
+{
+	int x, y;
+	uint64_t max = 0;
+
+	for(x=0; x<image->width; x++)
+	{
+		for(y=0; y<image->height; y++)
+		{
+			if(max < (((uint16_t *) (image->imageData)) + y * image->width)[x] &&
+					(((uint16_t *) (image->imageData)) + y * image->width)[x] < MAXTHRESHOLD)
+				max = (((uint16_t *) (image->imageData)) + y * image->width)[x];
+		}
+	}
+
+	return max;
+}
+
+void stretchFaceDepth(IplImage *image)
+{
+	int x, y;
+
+	uint16_t minFace = minFaceDepth(image);
+
+	for(x=0; x<image->width; x++)
+	{
+		for(y=0; y<image->height; y++)
+		{
+			(((uint16_t *) (image->imageData)) + y * image->width)[x] -= minFace;
+		}
+	}
+
+	uint16_t maxFace = maxFaceDepth(image);
+
+	for(x=0; x<image->width; x++)
+	{
+		for(y=0; y<image->height; y++)
+		{
+			(((uint16_t *) (image->imageData)) + y * image->width)[x] *= (0xFFFF / maxFace);
+		}
+	}
 }
