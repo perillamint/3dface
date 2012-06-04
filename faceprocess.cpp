@@ -45,3 +45,19 @@ ImageAvg *avgFace(IplImage * image, CvPoint pt1, CvPoint pt2)
 
 	return ret;
 }
+
+uint16_t avgFaceDepth(IplImage *image)
+{
+	int x, y;
+	uint64_t sum = 0;
+
+	for(x=0; x<image->width; x++)
+	{
+		for(y=0; y<image->height; y++)
+		{
+			sum += (((uint16_t *) (image->imageData)) + y * image->width)[x];
+		}
+	}
+
+	return (uint16_t)(sum / (image->width * image->height));
+}

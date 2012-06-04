@@ -17,4 +17,6 @@ struct Imageavg
 
 typedef Imageavg ImageAvg;
 
+uint16_t avgFaceDepth(IplImage *image);
+
 #endif /* FACEPROCESS_H_ */

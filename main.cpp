@@ -9,6 +9,7 @@
 #include <opencv/highgui.h>
 #include <stdio.h>
 #include "libfreenect_cv.h"
+#include "faceprocess.h"
 
 #define DEBUG printf("%s %s %d\n", __FILE__, __func__, __LINE__)
 
@@ -27,6 +28,9 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 	IplImage *depthTemp =
 		cvCreateImage(cvSize(img->width / scale, img->height / scale), 16, 1);
 	memcpy(depthTemp->imageData, depth->imageData, 640 * 480 * 2);
+
+	IplImage *faceDepth =
+		cvCreateImage(cvSize(img->width / scale, img->height / scale), 16, 1);
 
 	// Create two points to represent the face locations
 	CvPoint pt1, pt2;
@@ -64,6 +68,21 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 			cvRectangle(temp, pt1, pt2, CV_RGB(0, 0, 255), 3, 8, 0);
 			cvRectangle(depthTemp, pt1, pt2, CV_RGB(0, 0, 255), 3, 8, 0);
 
+			cvSetImageROI(depth, cvRect(pt1.x, pt1.y, r->width * scale, r->height * scale));
+
+			IplImage *faceDepthTemp = cvCreateImage(cvGetSize(depth), depth->depth, depth->nChannels);
+
+			cvCopy(depth, faceDepthTemp, NULL);
+
+			cvResetImageROI(depth);
+
+			//Maximize standard deviation.
+
+
+			cvResize(faceDepthTemp, faceDepth);
+
+			cvReleaseImage(&faceDepthTemp);
+
 			if (save)
 			{
 				FILE *csvFile = fopen("face.csv", "w");
@@ -93,9 +112,12 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 	// Show the image in the window named "result"
 	cvShowImage("result", temp);
 	cvShowImage("resultDepth", depthTemp);
+	cvShowImage("faceDepth", faceDepth);
 
 	// Release the temp image created.
 	cvReleaseImage(&temp);
+	cvReleaseImage(&depthTemp);
+	cvReleaseImage(&faceDepth);
 }
 
 int main(int argc, char **argv)
