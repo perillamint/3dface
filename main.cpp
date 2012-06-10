@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include "libfreenect_cv.h"
 #include "faceprocess.h"
+#include "PCAWrapper.h"
 
 #define DEBUG printf("%s %s %d\n", __FILE__, __func__, __LINE__)
 
@@ -38,6 +39,8 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 
 	// Clear the memory storage which was used before
 	cvClearMemStorage(storage);
+
+	PCAWrapper pca = new PCAWrapper;
 
 	// Find whether the cascade is loaded, to find the faces. If yes, then:
 	if (cascade)
@@ -68,15 +71,19 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 			cvRectangle(temp, pt1, pt2, CV_RGB(0, 0, 255), 3, 8, 0);
 			cvRectangle(depthTemp, pt1, pt2, CV_RGB(0, 0, 255), 3, 8, 0);
 
-			cvSetImageROI(depth, cvRect(pt1.x, pt1.y, r->width * scale, r->height * scale));
+			cvSetImageROI(depth,
+						  cvRect(pt1.x, pt1.y, r->width * scale,
+								 r->height * scale));
 
-			IplImage *faceDepthTemp = cvCreateImage(cvGetSize(depth), depth->depth, depth->nChannels);
+			IplImage *faceDepthTemp =
+				cvCreateImage(cvGetSize(depth), depth->depth,
+							  depth->nChannels);
 
 			cvCopy(depth, faceDepthTemp, NULL);
 
 			cvResetImageROI(depth);
 
-			//Maximize standard deviation.
+			// Maximize standard deviation.
 			stretchFaceDepth(faceDepthTemp);
 
 			cvResize(faceDepthTemp, faceDepth);
@@ -99,13 +106,6 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 				printf("Face captured!\n");
 				fclose(csvFile);
 			}
-			/* 
-			   pt1.x = r->x*scale+(r->width*.2); pt2.x =
-			   (r->x+(r->width*(1-.2)))*scale; pt1.y = r->y*scale; pt2.y =
-			   (r->y+r->height)*scale;
-
-			   // Draw the rectangle in the input image cvRectangle( temp,
-			   pt1, pt2, CV_RGB(0,255,0), 3, 8, 0 ); */
 		}
 	}
 

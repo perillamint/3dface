@@ -5,7 +5,7 @@ void printchar(unsigned char c)
 		printf("%c", c);		// 해당하는 값을 문자로 표시
 	else
 		printf(".");			// 출력 불가능한 문자는 그냥
-								// .으로 표시
+	// .으로 표시
 }
 
 // 메모리 시작 주소와 출력할 크기를 인자로 받음
@@ -39,7 +39,7 @@ void dumpcode(unsigned char *buff, int len)
 		int spaces = (len - i + 16 - i % 16) * 3 + 2;
 		for (j = 0; j < spaces; j++)
 			printf(" ");		// 부족한 공간만큼 space로 이동한
-								// 후,
+		// 후,
 		for (j = i - i % 16; j < len; j++)
 			printchar(buff[j]);	// 남은 문자 값들 출력
 	}
