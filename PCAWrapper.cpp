@@ -9,6 +9,8 @@
 #include <opencv/cv.h>
 #include <opencv/cvaux.h>
 
+#define DEBUG printf("%s %s %d\n", __FILE__, __func__, __LINE__)
+
 PCAWrapper::PCAWrapper()
 {
 	imageCnt = 0;
@@ -65,35 +67,35 @@ void PCAWrapper::training()
 	faceImage = new IplImage *[imageCnt];
 	eigens = new IplImage *[imageCnt - 1];
 	projectionImage = new IplImage *[imageCnt];
-
+	DEBUG;
 	for (i = 0; i < imageCnt; i++)
 	{
 		faceImage[i] = trainImage[i];
 		projectionImage[i] =
 			cvCreateImage(cvGetSize(faceImage[i]), IPL_DEPTH_8U, 1);
 	}
-
+	DEBUG;
 	for (i = 0; i < imageCnt - 1; i++)
 	{
 		eigens[i] = cvCreateImage(cvGetSize(faceImage[i]), IPL_DEPTH_32F, 1);
 	}
-
+	DEBUG;
 	vals = new double[imageCnt];
 	memset(vals, 0, sizeof(double) * imageCnt);
 	coeffs = new double *[imageCnt];
 	coeffs[0] = new double[imageCnt * (imageCnt - 1)];
-
+	DEBUG;
 	for (i = 1; i < imageCnt; i++)
 	{
 		coeffs[i] = coeffs[i - 1] + (imageCnt - 1);
 	}
-
+	DEBUG;
 	avg = cvCreateImage(cvGetSize(faceImage[0]), IPL_DEPTH_32F, 1);
 	criteria = cvTermCriteria(CV_TERMCRIT_ITER, imageCnt - 1, 0);
 
 	cvCalcEigenObjects(imageCnt, faceImage, eigens, 0, 0, 0, &criteria, avg,
 					   (float *)vals);
-
+	DEBUG;
 	projectionVector = new double *[imageCnt];
 	projectionVector[0] = new double[imageCnt * (imageCnt - 1)];
 
@@ -101,21 +103,21 @@ void PCAWrapper::training()
 	{
 		projectionVector[i] = projectionVector[i - 1] + (imageCnt - 1);
 	}
-
+	DEBUG;
 	for (i = 0; i < imageCnt; i++)
 	{
-		for (j = 0; j < imageCnt; j++)
+		for (j = 0; j < imageCnt-1; j++)
 		{
 			projectionVector[i][j] =
-				cvCalcDecompCoeff(faceImage[i], eigens[j], avg);
+				cvCalcDecompCoeff(trainImage[i], eigens[j], avg);
 		}
 	}
-
+	DEBUG;
 	for (i = 0; i < imageCnt; i++)
 	{
 		cvReleaseImage(&projectionImage[i]);
 	}
-
+	DEBUG;
 	delete[]coeffs[0];
 	delete[]coeffs;
 	delete[]faceImage;
