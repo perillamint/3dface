@@ -17,7 +17,7 @@
 static CvMemStorage *storage = 0;
 static CvHaarClassifierCascade *cascade = 0;
 
-void detect_and_draw(IplImage * img, IplImage * depth, bool save)
+void detect_and_draw(IplImage * img, IplImage * depth, IplImage *faceDepthRet, bool save)
 {
 	int scale = 1;
 
@@ -39,8 +39,6 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 
 	// Clear the memory storage which was used before
 	cvClearMemStorage(storage);
-
-	PCAWrapper pca = new PCAWrapper;
 
 	// Find whether the cascade is loaded, to find the faces. If yes, then:
 	if (cascade)
@@ -78,6 +76,9 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 			IplImage *faceDepthTemp =
 				cvCreateImage(cvGetSize(depth), depth->depth,
 							  depth->nChannels);
+			IplImage *faceDepthTemp2 =
+				cvCreateImage(cvGetSize(depth), 8,
+							  depth->nChannels);
 
 			cvCopy(depth, faceDepthTemp, NULL);
 
@@ -87,6 +88,9 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 			stretchFaceDepth(faceDepthTemp);
 
 			cvResize(faceDepthTemp, faceDepth);
+			cvConvertScale(faceDepthTemp, faceDepthTemp2, 1.0/256.0, 0);
+
+			cvResize(faceDepthTemp2, faceDepthRet);
 
 			cvReleaseImage(&faceDepthTemp);
 
@@ -123,6 +127,10 @@ void detect_and_draw(IplImage * img, IplImage * depth, bool save)
 int main(int argc, char **argv)
 {
 	cascade = (CvHaarClassifierCascade *) cvLoad("cascade.xml", 0, 0, 0);
+	IplImage *faceDepth = cvCreateImage(cvSize(100, 100), 8, 1);
+	char name[1000];
+	int imageCnt=0;
+	PCAWrapper pca;
 
 	if (!cascade)
 	{
@@ -167,9 +175,32 @@ int main(int argc, char **argv)
 
 		if ((key & 0xFF) == 'p')
 		{
-			detect_and_draw(image, depth, true);
+			detect_and_draw(image, depth, faceDepth, true);
 		}
-		detect_and_draw(image, depth, false);
+		detect_and_draw(image, depth, faceDepth, false);
+
+		if ((key & 0xFF) == 'i')
+		{
+			imageCnt++;
+
+			sprintf(name, "face%d", imageCnt);
+
+			printf("face %s registered!\n", name);
+
+			pca.insertImage(faceDepth, name);
+		}
+
+		if((key & 0xFF) == 'r')
+		{
+			printf("%s\n", pca.search(faceDepth));
+		}
+
+		if((key & 0xFF) == 't')
+		{
+			printf("Training...\n");
+			pca.training();
+		}
+
 		cvShowImage("RGB", image);
 
 		// DEBUG;
