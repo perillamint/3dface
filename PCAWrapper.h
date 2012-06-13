@@ -30,8 +30,7 @@ class PCAWrapper
 	char *search(IplImage *image);
 	double searchDist(IplImage *image);
 	NameDistance *GetNameDistance(int index);
-	double measure(double *vector_1, double *vector_2, int starting_position,
-				   int ending_position, int measurement, double *eigenvalue);
+
   private:
 	  IplImage ** faceImage;
 	IplImage **eigens;
@@ -41,6 +40,8 @@ class PCAWrapper
 	  vector < IplImage * >trainImage;
 	  vector < string > imageName;
 	  vector < NDistance * >distance;
+	  double measure(double *vector_1, double *vector_2, int starting_position,
+	  				   int ending_position, int measurement, double *eigenvalue);
 
 	int imageCnt;
 	double **projectionVector;
