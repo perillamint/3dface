@@ -192,7 +192,7 @@ int main(int argc, char **argv)
 
 		if((key & 0xFF) == 'r')
 		{
-			printf("%s\n", pca.search(faceDepth));
+			printf("%s Dist = %f\n", pca.search(faceDepth), pca.searchDist(faceDepth));
 		}
 
 		if((key & 0xFF) == 't')
