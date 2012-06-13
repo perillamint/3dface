@@ -20,15 +20,6 @@ typedef struct NameDistance
 	double Distance;
 } NDistance;
 
-typedef struct SortData
-{
-	bool operator() (NameDistance * a, NameDistance * b) const
-	{
-		return (a->Distance <= b->Distance) ? true : false;
-	}
-}
-SortData;
-
 class PCAWrapper
 {
   public:
@@ -36,7 +27,8 @@ class PCAWrapper
 	virtual ~ PCAWrapper();
 	void insertImage(IplImage * image, char *name);
 	void training();
-	char *search(IplImage * image);
+	char *search(IplImage *image);
+	double searchDist(IplImage *image);
 	NameDistance *GetNameDistance(int index);
 	double measure(double *vector_1, double *vector_2, int starting_position,
 				   int ending_position, int measurement, double *eigenvalue);
