@@ -85,7 +85,7 @@ void detect_and_draw(IplImage * img, IplImage * depth, IplImage *faceDepthRet, b
 			cvResetImageROI(depth);
 
 			// Maximize standard deviation.
-			stretchFaceDepth(faceDepthTemp);
+			//stretchFaceDepth(faceDepthTemp);
 
 			cvResize(faceDepthTemp, faceDepth);
 			cvConvertScale(faceDepthTemp, faceDepthTemp2, 1.0/256.0, 0);
